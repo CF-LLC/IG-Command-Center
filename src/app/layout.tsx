@@ -1,10 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import dynamic from 'next/dynamic'
-
-const Toaster = dynamic(() => import('@/components/ui/toaster').then((m) => m.Toaster), {
-  ssr: false,
-})
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'IG Command Center',
