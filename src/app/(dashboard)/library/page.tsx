@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Upload, Search, Grid, List, Filter, Image, Video, Trash2 } from 'lucide-react'
+import { Upload, Search, Grid, List, Filter, ImageIcon, Video, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
@@ -101,7 +101,7 @@ export default function LibraryPage() {
       {/* Asset stats */}
       <div className="flex gap-4 text-sm text-muted-foreground">
         <span className="flex items-center gap-1">
-          <Image className="h-4 w-4" />
+          <ImageIcon className="h-4 w-4" />
           {DEMO_ASSETS.filter((a) => a.type === 'image').length} images
         </span>
         <span className="flex items-center gap-1">
