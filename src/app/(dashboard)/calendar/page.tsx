@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, parseISO } from 'date-fns'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -162,9 +163,11 @@ export default function CalendarPage() {
                   {selectedDayEvents.map((event) => (
                     <div key={event.id} className="flex items-start gap-3 p-3 rounded-lg border">
                       {event.thumbnail ? (
-                        <img
+                        <Image
                           src={event.thumbnail}
                           alt=""
+                          width={48}
+                          height={48}
                           className="h-12 w-12 rounded-md object-cover shrink-0"
                         />
                       ) : (

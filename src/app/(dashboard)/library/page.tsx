@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { Upload, Search, Grid, List, Filter, ImageIcon, Video, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -122,11 +123,12 @@ export default function LibraryPage() {
               }`}
               onClick={() => toggleSelect(asset.id)}
             >
-              <div className="aspect-square">
-                <img
+              <div className="aspect-square relative">
+                <Image
                   src={asset.thumbnail || asset.url}
                   alt={asset.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
               {asset.type === 'video' && (
@@ -162,11 +164,12 @@ export default function LibraryPage() {
               onClick={() => toggleSelect(asset.id)}
             >
               <CardContent className="flex items-center gap-4 p-3">
-                <div className="h-14 w-14 rounded-md overflow-hidden shrink-0">
-                  <img
+                <div className="h-14 w-14 rounded-md overflow-hidden shrink-0 relative">
+                  <Image
                     src={asset.thumbnail || asset.url}
                     alt={asset.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
                 <div className="flex-1 min-w-0">

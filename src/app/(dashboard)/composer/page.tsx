@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Sparkles, Image, Clock, Send, Save } from 'lucide-react'
+import NextImage from 'next/image'
+import { Sparkles, Clock, Send, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
@@ -264,11 +265,12 @@ export default function ComposerPage() {
                     </div>
 
                     {/* Image */}
-                    <div className="aspect-square bg-muted">
-                      <img
+                    <div className="aspect-square bg-muted relative">
+                      <NextImage
                         src={mediaUrls[0]}
                         alt="Preview"
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
                       />
                     </div>
 
@@ -289,10 +291,11 @@ export default function ComposerPage() {
 
                 <TabsContent value="story">
                   <div className="border rounded-lg overflow-hidden mt-3 aspect-[9/16] relative">
-                    <img
+                    <NextImage
                       src={mediaUrls[0]}
                       alt="Story preview"
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                     />
                     <div className="absolute bottom-4 left-0 right-0 px-4">
                       <p className="text-white text-xs text-center drop-shadow-lg">

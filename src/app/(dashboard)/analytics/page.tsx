@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import {
   Users, TrendingUp, Eye, Heart, MessageSquare, Bookmark,
   ArrowUpRight, BarChart3,
@@ -210,11 +211,15 @@ export default function AnalyticsPage() {
                 {topPosts.map((post, idx) => (
                   <div key={post.postId} className="flex items-center gap-4">
                     <span className="text-2xl font-bold text-muted-foreground w-6 text-center">{idx + 1}</span>
-                    <img
-                      src={post.thumbnail}
-                      alt=""
-                      className="h-14 w-14 rounded-md object-cover shrink-0"
-                    />
+                    {post.thumbnail && (
+                      <Image
+                        src={post.thumbnail}
+                        alt=""
+                        width={56}
+                        height={56}
+                        className="h-14 w-14 rounded-md object-cover shrink-0"
+                      />
+                    )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium line-clamp-1">{post.caption}</p>
                       <div className="flex items-center gap-3 mt-1">
@@ -248,7 +253,7 @@ export default function AnalyticsPage() {
             <Card key={a.accountId}>
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <img src={account?.avatar} alt="" className="h-9 w-9 rounded-full" />
+                  {account?.avatar && <Image src={account.avatar} alt="" width={36} height={36} className="h-9 w-9 rounded-full object-cover" />}
                   <div>
                     <CardTitle className="text-sm">{account?.name}</CardTitle>
                     <CardDescription className="text-xs">@{account?.username}</CardDescription>
