@@ -30,7 +30,7 @@ IG Command Center is a production-ready internal web app that lets a business te
 - **Auth**: Demo mode by default
 - **AI**: OpenAI API
 - **Charts**: Recharts
-- **Hosting**: Vercel
+- **Hosting**: Netlify (recommended), Vercel supported
 
 ## Quick Start
 
@@ -80,6 +80,10 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 | `OPENAI_API_KEY` | OpenAI API key for AI features | For AI features |
 | `NEXT_PUBLIC_APP_URL` | App URL (for OAuth callbacks) | For live mode |
 | `NEXT_PUBLIC_DEMO_MODE` | Set `true` for demo mode | Optional |
+| `ACCESS_PROTECTION_ENABLED` | Enables single-user access gate (defaults on in production) | Recommended |
+| `ACCESS_ALLOWED_EMAIL` | The only email allowed to sign in | Required when protection enabled |
+| `ACCESS_PASSWORD` | Password for the allowed account | Required when protection enabled |
+| `ACCESS_SESSION_SECRET` | HMAC secret used to sign session cookies | Required when protection enabled |
 
 ## Demo Mode
 
@@ -186,8 +190,11 @@ To enable live Instagram integration:
 
 1. Create a Neon project (or provision Netlify Database).
 2. Set `DATABASE_URL` in Netlify environment variables.
-3. Deploy this repo to Netlify (the `@netlify/plugin-nextjs` plugin is preconfigured in `netlify.toml`).
-4. Optionally run `npm run prisma:push` against your production database before first use.
+3. Set `NEXT_PUBLIC_APP_URL` to your Netlify site URL.
+4. Set `NEXT_PUBLIC_DEMO_MODE=false` for production.
+5. Set `ACCESS_ALLOWED_EMAIL`, `ACCESS_PASSWORD`, and `ACCESS_SESSION_SECRET`.
+6. Deploy this repo to Netlify (the `@netlify/plugin-nextjs` plugin is preconfigured in `netlify.toml`).
+7. Run `npm run prisma:push` against your production database before first use.
 
 ### Vercel
 

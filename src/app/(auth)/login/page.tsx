@@ -10,17 +10,40 @@ import { useRouter } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
+const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== 'false'
+
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('alex@company.com')
-  const [password, setPassword] = useState('demo1234')
+  const [email, setEmail] = useState(isDemoMode ? 'alex@company.com' : '')
+  const [password, setPassword] = useState(isDemoMode ? 'demo1234' : '')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 800))
-    router.push('/dashboard')
+    setError(null)
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as { error?: string } | null
+        throw new Error(body?.error || 'Sign in failed. Check your credentials.')
+      }
+
+      router.push('/dashboard')
+      router.refresh()
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unable to sign in.'
+      setError(message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -65,14 +88,18 @@ export default function LoginPage() {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? 'Signing in...' : 'Sign In'}
               </Button>
+
+              {error && <p className="text-sm text-destructive">{error}</p>}
             </form>
 
-            <div className="mt-4 p-3 rounded-lg bg-muted text-sm text-center">
-              <p className="font-medium">🎭 Demo Mode</p>
-              <p className="text-muted-foreground text-xs mt-0.5">
-                Credentials are pre-filled. Click Sign In to enter demo.
-              </p>
-            </div>
+            {isDemoMode && (
+              <div className="mt-4 rounded-lg bg-muted p-3 text-center text-sm">
+                <p className="font-medium">Demo Mode</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Credentials are pre-filled. Click Sign In to continue.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

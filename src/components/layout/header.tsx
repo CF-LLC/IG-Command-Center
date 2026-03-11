@@ -1,6 +1,7 @@
 'use client'
 
 import { Bell, Search, Menu } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -21,6 +22,14 @@ interface HeaderProps {
 }
 
 export function Header({ title }: HeaderProps) {
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => undefined)
+    router.push('/login')
+    router.refresh()
+  }
+
   return (
     <header className="flex h-16 items-center gap-2 border-b bg-card px-3 md:gap-4 md:px-6">
       {/* Mobile menu */}
@@ -97,7 +106,9 @@ export function Header({ title }: HeaderProps) {
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">Log out</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive" onSelect={handleLogout}>
+              Log out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
