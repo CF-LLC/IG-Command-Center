@@ -4,9 +4,10 @@ import {
   getDemoEngagementChartData,
   getDemoReachChartData,
 } from '@/lib/demo-data'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 import type { AccountAnalytics } from '@/types'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+const isDemoMode = isDemoModeEnabled()
 
 export const analyticsService = {
   async getAccountAnalytics(

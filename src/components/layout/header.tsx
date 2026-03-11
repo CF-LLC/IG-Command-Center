@@ -22,7 +22,7 @@ interface HeaderProps {
 
 export function Header({ title }: HeaderProps) {
   return (
-    <header className="flex h-16 items-center gap-4 border-b bg-card px-6">
+    <header className="flex h-16 items-center gap-2 border-b bg-card px-3 md:gap-4 md:px-6">
       {/* Mobile menu */}
       <Sheet>
         <SheetTrigger asChild>
@@ -31,17 +31,15 @@ export function Header({ title }: HeaderProps) {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="p-0 w-64">
-          <Sidebar />
+          <Sidebar mobile />
         </SheetContent>
       </Sheet>
 
       {/* Title */}
-      {title && (
-        <h1 className="text-lg font-semibold hidden md:block">{title}</h1>
-      )}
+      {title && <h1 className="hidden text-lg font-semibold md:block">{title}</h1>}
 
       {/* Search */}
-      <div className="relative flex-1 max-w-sm ml-auto md:ml-0">
+      <div className="relative hidden w-full max-w-sm flex-1 sm:block">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search..."
@@ -49,7 +47,7 @@ export function Header({ title }: HeaderProps) {
         />
       </div>
 
-      <div className="flex items-center gap-2 ml-auto">
+      <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
         {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

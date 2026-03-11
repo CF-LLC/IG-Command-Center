@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  owner
+  admin
+  editor
+  approver
+}
+
+enum PostStatus {
+  draft
+  scheduled
+  published
+  failed
+  needs_approval
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  avatar    String?
+  role      UserRole @default(editor)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts     Post[]
+}
+
+model Account {
+  id        String   @id @default(cuid())
+  name      String
+  username  String   @unique
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts     Post[]
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  accountId   String
+  authorId    String?
+  caption     String     @db.Text
+  hashtags    String[]
+  postType    String
+  status      PostStatus @default(draft)
+  scheduledAt DateTime?
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  account     Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  author      User?      @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  comments    Comment[]
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  postId      String
+  accountId   String
+  authorName  String
+  authorAvatar String?
+  text        String   @db.Text
+  sentiment   String?
+  status      String?
+  createdAt   DateTime @default(now())
+
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, createdAt])
+}

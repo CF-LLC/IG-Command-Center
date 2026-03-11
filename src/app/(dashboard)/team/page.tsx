@@ -36,12 +36,12 @@ export default function TeamPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">Team Management</h1>
           <p className="text-muted-foreground">{team.filter((m) => m.status === 'active').length} active members</p>
         </div>
-        <Button>
+        <Button className="w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-2" />
           Invite Member
         </Button>
@@ -77,7 +77,7 @@ export default function TeamPage() {
 
       {/* Team table */}
       <Card>
-        <CardContent className="p-0">
+        <CardContent className="p-0 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>

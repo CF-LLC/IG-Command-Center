@@ -1,16 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
-
 export async function middleware(request: NextRequest) {
-  // In demo mode, allow all routes
-  if (isDemoMode) {
-    return NextResponse.next()
-  }
-
-  // In production, use Supabase auth middleware
-  const { updateSession } = await import('@/lib/supabase/middleware')
-  return updateSession(request)
+  return NextResponse.next({ request })
 }
 
 export const config = {

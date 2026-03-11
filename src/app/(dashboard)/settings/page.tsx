@@ -31,19 +31,19 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">Settings</h1>
           <p className="text-muted-foreground">Configure your IG Command Center preferences</p>
         </div>
-        <Button onClick={handleSave}>
+        <Button onClick={handleSave} className="w-full sm:w-auto">
           <Save className="h-4 w-4 mr-2" />
           Save Changes
         </Button>
       </div>
 
       <Tabs defaultValue="general">
-        <TabsList>
+        <TabsList className="h-auto w-full justify-start gap-1 overflow-x-auto whitespace-nowrap">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="publishing">Publishing</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
@@ -197,7 +197,7 @@ export default function SettingsPage() {
                   icon: '🤖',
                 },
                 {
-                  name: 'Supabase',
+                  name: 'Neon Postgres',
                   status: process.env.NEXT_PUBLIC_DEMO_MODE === 'true' ? 'demo' : 'connected',
                   description: process.env.NEXT_PUBLIC_DEMO_MODE === 'true' ? 'Using demo data' : 'Database connected',
                   icon: '🗄️',

@@ -1,5 +1,7 @@
 // Auth service - in demo mode, uses a simple in-memory session
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
+
+const isDemoMode = isDemoModeEnabled()
 
 export interface AuthUser {
   id: string

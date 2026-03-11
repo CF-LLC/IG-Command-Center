@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import {
   Users,
   TrendingUp,
@@ -277,11 +278,13 @@ export default function DashboardPage() {
             ) : (
               scheduledPosts.map((post) => (
                 <div key={post.id} className="flex items-start gap-3">
-                  <div className="h-12 w-12 rounded-md overflow-hidden shrink-0">
-                    <img
-                      src={post.media[0]?.thumbnail || post.media[0]?.url}
+                  <div className="relative h-12 w-12 rounded-md overflow-hidden shrink-0">
+                    <Image
+                      src={post.media[0]?.thumbnail || post.media[0]?.url || 'https://via.placeholder.com/48'}
                       alt="Post preview"
-                      className="h-full w-full object-cover"
+                      fill
+                      sizes="48px"
+                      className="object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0">

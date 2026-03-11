@@ -1,7 +1,8 @@
 import { DEMO_COMMENTS } from '@/lib/demo-data'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 import type { Comment, CommentReply } from '@/types'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+const isDemoMode = isDemoModeEnabled()
 
 export const commentsService = {
   async getComments(filters?: {

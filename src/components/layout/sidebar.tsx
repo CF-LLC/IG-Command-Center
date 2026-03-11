@@ -9,11 +9,9 @@ import {
   Library,
   BarChart3,
   MessageSquare,
-  Users,
   UserCog,
   Settings,
   Instagram,
-  ChevronRight,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -68,11 +66,22 @@ const navItems = [
   },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  mobile?: boolean
+  className?: string
+}
+
+export function Sidebar({ mobile = false, className }: SidebarProps) {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden md:flex h-full w-64 flex-col border-r bg-card">
+    <aside
+      className={cn(
+        'h-full w-64 flex-col border-r bg-card',
+        mobile ? 'flex' : 'hidden md:flex',
+        className
+      )}
+    >
       {/* Logo */}
       <div className="flex h-16 items-center gap-2 px-6 border-b">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">

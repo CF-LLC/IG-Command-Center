@@ -1,29 +1,18 @@
 import {
   DEMO_ACCOUNTS,
-  DEMO_POSTS,
-  DEMO_COMMENTS,
-  DEMO_TEAM,
-  DEMO_ASSETS,
-  DEMO_ANALYTICS,
-  DEMO_DASHBOARD_STATS,
-  DEMO_CALENDAR_EVENTS,
-  DEMO_NOTIFICATIONS,
-  DEMO_APPROVALS,
-  getDemoFollowerChartData,
-  getDemoEngagementChartData,
-  getDemoReachChartData,
 } from '@/lib/demo-data'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 import type { IGAccount } from '@/types'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+const isDemoMode = isDemoModeEnabled()
 
 export const instagramService = {
   async getAccounts(): Promise<IGAccount[]> {
     if (isDemoMode) {
       return DEMO_ACCOUNTS
     }
-    // Real implementation would call Supabase
-    throw new Error('Not in demo mode - Supabase not configured')
+    // Real implementation should call Instagram Graph API + Neon-backed services.
+    throw new Error('Not in demo mode')
   },
 
   async getAccount(id: string): Promise<IGAccount | null> {

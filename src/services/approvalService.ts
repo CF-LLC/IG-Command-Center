@@ -1,7 +1,8 @@
 import { DEMO_APPROVALS } from '@/lib/demo-data'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 import type { ApprovalRequest } from '@/types'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+const isDemoMode = isDemoModeEnabled()
 
 export const approvalService = {
   async getPendingApprovals(): Promise<ApprovalRequest[]> {

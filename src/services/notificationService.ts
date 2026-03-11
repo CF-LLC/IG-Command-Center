@@ -1,7 +1,8 @@
 import { DEMO_NOTIFICATIONS } from '@/lib/demo-data'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 import type { Notification } from '@/types'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+const isDemoMode = isDemoModeEnabled()
 
 export const notificationService = {
   async getNotifications(): Promise<Notification[]> {

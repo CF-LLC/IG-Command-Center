@@ -2,7 +2,7 @@ import { DEMO_ACCOUNTS, DEMO_POSTS, DEMO_COMMENTS, DEMO_TEAM, DEMO_ASSETS } from
 
 /**
  * Seed script - In demo mode this just logs the data.
- * In production mode, this would insert records into Supabase.
+ * In production mode, this would insert records into Neon/Postgres via Prisma.
  */
 async function seed() {
   console.log('🌱 Seeding demo data...\n')
@@ -32,11 +32,11 @@ async function seed() {
   console.log(`\n🖼️  Assets: ${DEMO_ASSETS.length}`)
 
   console.log('\n✅ Demo data summary complete!')
-  console.log('\nTo use with a real Supabase instance:')
-  console.log('1. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env')
-  console.log('2. Run the migration: supabase/migrations/001_initial_schema.sql')
+  console.log('\nTo use with a real Neon/Postgres instance:')
+  console.log('1. Set DATABASE_URL in .env')
+  console.log('2. Run: npm run prisma:push')
   console.log('3. Set NEXT_PUBLIC_DEMO_MODE=false')
-  console.log('4. Re-run this script to insert data into Supabase\n')
+  console.log('4. Re-run this script to insert data into the database\n')
 }
 
 seed().catch(console.error)

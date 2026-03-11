@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import {
   Users, TrendingUp, Eye, Heart, MessageSquare, Bookmark,
   ArrowUpRight, BarChart3,
@@ -53,14 +54,14 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">Analytics</h1>
           <p className="text-muted-foreground">Deep insights across your Instagram accounts</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:flex-nowrap">
           <Select value={selectedAccount} onValueChange={setSelectedAccount}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-full sm:w-48">
               <SelectValue placeholder="All Accounts" />
             </SelectTrigger>
             <SelectContent>
@@ -71,7 +72,7 @@ export default function AnalyticsPage() {
             </SelectContent>
           </Select>
           <Select value={period} onValueChange={(v) => setPeriod(v as typeof period)}>
-            <SelectTrigger className="w-28">
+            <SelectTrigger className="w-full sm:w-28">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -108,7 +109,7 @@ export default function AnalyticsPage() {
       </div>
 
       <Tabs defaultValue="followers">
-        <TabsList>
+        <TabsList className="h-auto w-full justify-start gap-1 overflow-x-auto whitespace-nowrap">
           <TabsTrigger value="followers">Followers</TabsTrigger>
           <TabsTrigger value="engagement">Engagement</TabsTrigger>
           <TabsTrigger value="reach">Reach</TabsTrigger>
@@ -210,9 +211,11 @@ export default function AnalyticsPage() {
                 {topPosts.map((post, idx) => (
                   <div key={post.postId} className="flex items-center gap-4">
                     <span className="text-2xl font-bold text-muted-foreground w-6 text-center">{idx + 1}</span>
-                    <img
+                    <Image
                       src={post.thumbnail}
                       alt=""
+                      width={56}
+                      height={56}
                       className="h-14 w-14 rounded-md object-cover shrink-0"
                     />
                     <div className="flex-1 min-w-0">
@@ -248,7 +251,15 @@ export default function AnalyticsPage() {
             <Card key={a.accountId}>
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <img src={account?.avatar} alt="" className="h-9 w-9 rounded-full" />
+                  {account?.avatar && (
+                    <Image
+                      src={account.avatar}
+                      alt=""
+                      width={36}
+                      height={36}
+                      className="h-9 w-9 rounded-full"
+                    />
+                  )}
                   <div>
                     <CardTitle className="text-sm">{account?.name}</CardTitle>
                     <CardDescription className="text-xs">@{account?.username}</CardDescription>

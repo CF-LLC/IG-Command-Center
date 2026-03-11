@@ -6,7 +6,7 @@ Internal business tool to let one team manage all accounts from a single dashboa
 
 ## Overview
 
-IG Command Center is a production-ready internal web app that lets a business team manage multiple Instagram accounts from a single dashboard. Built with Next.js 14+, TypeScript, TailwindCSS, shadcn/ui, Supabase, and OpenAI.
+IG Command Center is a production-ready internal web app that lets a business team manage multiple Instagram accounts from a single dashboard. Built with Next.js 14+, TypeScript, TailwindCSS, shadcn/ui, PostgreSQL (Neon/Netlify Database), and OpenAI.
 
 ## Features
 
@@ -19,15 +19,15 @@ IG Command Center is a production-ready internal web app that lets a business te
 - **Approval Workflow** — Draft → Submit → Approve/Reject flow with role-based access
 - **Team Management** — Role-based access control (Admin, Editor, Approver)
 - **Notification System** — In-app notifications for approvals, publishes, failures, and more
-- **Demo Mode** — Fully functional without live Instagram or Supabase credentials
+- **Demo Mode** — Fully functional without live Instagram credentials
 
 ## Tech Stack
 
 - **Framework**: Next.js 14+ with App Router
 - **Language**: TypeScript
 - **Styling**: TailwindCSS + shadcn/ui
-- **Database**: Supabase (PostgreSQL)
-- **Auth**: Supabase Auth
+- **Database**: PostgreSQL via Neon (including Netlify Database)
+- **Auth**: Demo mode by default
 - **AI**: OpenAI API
 - **Charts**: Recharts
 - **Hosting**: Vercel
@@ -76,16 +76,14 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 | Variable | Description | Required |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL | For live mode |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous key | For live mode |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | For live mode |
+| `DATABASE_URL` | Neon/Netlify Postgres connection string | For DB-backed mode |
 | `OPENAI_API_KEY` | OpenAI API key for AI features | For AI features |
 | `NEXT_PUBLIC_APP_URL` | App URL (for OAuth callbacks) | For live mode |
 | `NEXT_PUBLIC_DEMO_MODE` | Set `true` for demo mode | Optional |
 
 ## Demo Mode
 
-Demo mode runs the full app with seeded data — no Supabase or Instagram credentials required. It includes:
+Demo mode runs the full app with seeded data — no Instagram credentials required. It includes:
 
 - 5 sample Instagram accounts (StyleHaus Brand, TechPulse Media, GreenLeaf Kitchen, FitLife Studio, Urban Lens Photography)
 - 90 days of analytics metrics
@@ -95,15 +93,25 @@ Demo mode runs the full app with seeded data — no Supabase or Instagram creden
 - Content library with captions, hashtag sets, hooks, and CTAs
 - Sample team members and notifications
 
-## Database Setup (Live Mode)
+## Database Setup (Neon / Netlify)
 
-Run the migration to create all tables:
+Generate Prisma client:
 
 ```bash
-psql -h <your-db-host> -U postgres -d postgres -f supabase/migrations/001_initial_schema.sql
+npm run prisma:generate
 ```
 
-Or use the Supabase dashboard to run the SQL from `supabase/migrations/001_initial_schema.sql`.
+Push schema to Neon/Netlify Postgres:
+
+```bash
+npm run prisma:push
+```
+
+Create local migrations (optional):
+
+```bash
+npm run prisma:migrate
+```
 
 ## Project Structure
 
@@ -128,7 +136,8 @@ src/
 ├── lib/
 │   ├── demo-data.ts     # Seeded demo data
 │   ├── utils.ts         # Utility functions
-│   └── supabase/        # Supabase clients
+│   ├── db.ts            # Prisma client singleton
+│   └── runtime-config.ts
 ├── services/            # Service layer
 │   ├── authService.ts
 │   ├── instagramService.ts
@@ -173,7 +182,14 @@ To enable live Instagram integration:
 
 ## Deployment
 
-### Vercel (Recommended)
+### Netlify + Neon (Recommended Free Path)
+
+1. Create a Neon project (or provision Netlify Database).
+2. Set `DATABASE_URL` in Netlify environment variables.
+3. Deploy this repo to Netlify (the `@netlify/plugin-nextjs` plugin is preconfigured in `netlify.toml`).
+4. Optionally run `npm run prisma:push` against your production database before first use.
+
+### Vercel
 
 ```bash
 npm install -g vercel

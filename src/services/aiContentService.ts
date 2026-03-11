@@ -1,6 +1,7 @@
 import type { AIContentRequest, AIContentResponse } from '@/types'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+const isDemoMode = isDemoModeEnabled()
 
 const DEMO_CAPTIONS = [
   "✨ Elevate your everyday with our latest drop. Quality you can feel, style you can see. Shop the link in bio! 🛍️",
