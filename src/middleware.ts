@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { verifyAccessSessionInMiddleware } from '@/lib/access-auth-edge'
 import { ACCESS_COOKIE_NAME } from '@/lib/access-constants'
-import { isAccessProtectionEnabled } from '@/lib/runtime-config'
+import { getAccessProtectionConfigIssues, isAccessProtectionEnabled } from '@/lib/runtime-config'
 
 export async function middleware(request: NextRequest) {
   if (!isAccessProtectionEnabled()) {
@@ -10,21 +11,37 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const isLoginRoute = pathname === '/login'
   const isAuthApiRoute = pathname === '/api/auth/login' || pathname === '/api/auth/logout'
-  const hasAccessSession = Boolean(request.cookies.get(ACCESS_COOKIE_NAME)?.value)
+  const configIssues = getAccessProtectionConfigIssues()
+
+  if (configIssues.length > 0) {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Access protection is misconfigured.' }, { status: 503 })
+    }
+
+    return new NextResponse('Service unavailable: access protection is misconfigured.', {
+      status: 503,
+      headers: {
+        'content-type': 'text/plain; charset=utf-8',
+      },
+    })
+  }
+
+  const accessSession = request.cookies.get(ACCESS_COOKIE_NAME)?.value
+  const hasValidAccessSession = await verifyAccessSessionInMiddleware(accessSession)
 
   if (isAuthApiRoute) {
     return NextResponse.next({ request })
   }
 
-  if (isLoginRoute && hasAccessSession) {
+  if (isLoginRoute && hasValidAccessSession) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  if (pathname.startsWith('/api/') && !hasAccessSession) {
+  if (pathname.startsWith('/api/') && !hasValidAccessSession) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  if (!isLoginRoute && !hasAccessSession) {
+  if (!isLoginRoute && !hasValidAccessSession) {
     const loginUrl = new URL('/login', request.url)
     return NextResponse.redirect(loginUrl)
   }

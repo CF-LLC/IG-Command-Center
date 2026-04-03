@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from 'crypto'
+import { getAccessProtectionConfigIssues } from '@/lib/runtime-config'
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7
 
 function getAccessAllowedEmail(): string {
@@ -10,7 +11,7 @@ function getAccessPassword(): string {
 }
 
 function getAccessSecret(): string {
-  return process.env.ACCESS_SESSION_SECRET || process.env.ACCESS_PASSWORD || ''
+  return process.env.ACCESS_SESSION_SECRET || ''
 }
 
 function signPayload(payload: string, secret: string): string {
@@ -29,7 +30,7 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export function canUseProtectedAccess(): boolean {
-  return Boolean(getAccessAllowedEmail() && getAccessPassword() && getAccessSecret())
+  return getAccessProtectionConfigIssues().length === 0
 }
 
 export function validateAccessCredentials(email: string, password: string): boolean {

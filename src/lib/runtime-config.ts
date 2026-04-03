@@ -4,7 +4,7 @@ export function isDemoModeEnabled(): boolean {
 }
 
 export function hasDatabaseUrl(): boolean {
-  return Boolean(process.env.DATABASE_URL)
+  return Boolean(process.env.NETLIFY_DATABASE_URL_UNPOOLED)
 }
 
 export function isAccessProtectionEnabled(): boolean {
@@ -18,4 +18,33 @@ export function isAccessProtectionEnabled(): boolean {
   }
 
   return process.env.NODE_ENV === 'production'
+}
+
+export function getAccessProtectionConfigIssues(): string[] {
+  const issues: string[] = []
+  const email = (process.env.ACCESS_ALLOWED_EMAIL || '').trim().toLowerCase()
+  const password = process.env.ACCESS_PASSWORD || ''
+  const secret = process.env.ACCESS_SESSION_SECRET || ''
+
+  if (!email) {
+    issues.push('ACCESS_ALLOWED_EMAIL is required')
+  }
+
+  if (!password) {
+    issues.push('ACCESS_PASSWORD is required')
+  }
+
+  if (!secret) {
+    issues.push('ACCESS_SESSION_SECRET is required')
+  }
+
+  if (password && password.length < 12) {
+    issues.push('ACCESS_PASSWORD must be at least 12 characters')
+  }
+
+  if (secret && secret.length < 32) {
+    issues.push('ACCESS_SESSION_SECRET must be at least 32 characters')
+  }
+
+  return issues
 }

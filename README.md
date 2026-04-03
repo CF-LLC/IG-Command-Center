@@ -76,14 +76,28 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 | Variable | Description | Required |
 |---|---|---|
-| `DATABASE_URL` | Neon/Netlify Postgres connection string | For DB-backed mode |
+| `NETLIFY_DATABASE_URL_UNPOOLED` | Netlify Postgres connection (unpooled for migrations) | For DB-backed mode |
+| `NETLIFY_DATABASE_URL` | Netlify Postgres connection (pooled for runtime) | For DB-backed mode |
 | `OPENAI_API_KEY` | OpenAI API key for AI features | For AI features |
 | `NEXT_PUBLIC_APP_URL` | App URL (for OAuth callbacks) | For live mode |
 | `NEXT_PUBLIC_DEMO_MODE` | Set `true` for demo mode | Optional |
 | `ACCESS_PROTECTION_ENABLED` | Enables single-user access gate (defaults on in production) | Recommended |
 | `ACCESS_ALLOWED_EMAIL` | The only email allowed to sign in | Required when protection enabled |
-| `ACCESS_PASSWORD` | Password for the allowed account | Required when protection enabled |
-| `ACCESS_SESSION_SECRET` | HMAC secret used to sign session cookies | Required when protection enabled |
+| `ACCESS_PASSWORD` | Password for the allowed account (min 12 chars) | Required when protection enabled |
+| `ACCESS_SESSION_SECRET` | HMAC secret used to sign session cookies (min 32 chars) | Required when protection enabled |
+
+## Production Security Checklist
+
+Use this checklist before deploying:
+
+1. Set `NEXT_PUBLIC_DEMO_MODE=false`.
+2. Keep `ACCESS_PROTECTION_ENABLED=true` (or unset in production; it defaults to enabled).
+3. Set `ACCESS_ALLOWED_EMAIL` to your personal owner email only.
+4. Set a long unique `ACCESS_PASSWORD` (12+ characters).
+5. Set a separate random `ACCESS_SESSION_SECRET` (32+ characters, do not reuse password).
+6. Rotate `ACCESS_PASSWORD` and `ACCESS_SESSION_SECRET` if they were ever shared.
+
+When access protection is enabled, only the configured `ACCESS_ALLOWED_EMAIL` can authenticate.
 
 ## Demo Mode
 
@@ -188,8 +202,8 @@ To enable live Instagram integration:
 
 ### Netlify + Neon (Recommended Free Path)
 
-1. Create a Neon project (or provision Netlify Database).
-2. Set `DATABASE_URL` in Netlify environment variables.
+1. Provision Netlify Database (automatically provides NETLIFY_DATABASE_URL and NETLIFY_DATABASE_URL_UNPOOLED).
+2. Netlify environment variables are set automatically.
 3. Set `NEXT_PUBLIC_APP_URL` to your Netlify site URL.
 4. Set `NEXT_PUBLIC_DEMO_MODE=false` for production.
 5. Set `ACCESS_ALLOWED_EMAIL`, `ACCESS_PASSWORD`, and `ACCESS_SESSION_SECRET`.

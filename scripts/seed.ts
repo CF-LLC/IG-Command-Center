@@ -32,8 +32,8 @@ async function seed() {
   console.log(`\n🖼️  Assets: ${DEMO_ASSETS.length}`)
 
   console.log('\n✅ Demo data summary complete!')
-  console.log('\nTo use with a real Neon/Postgres instance:')
-  console.log('1. Set DATABASE_URL in .env')
+  console.log('\nTo use with a real Netlify Database instance:')
+  console.log('1. Set NETLIFY_DATABASE_URL_UNPOOLED in .env')
   console.log('2. Run: npm run prisma:push')
   console.log('3. Set NEXT_PUBLIC_DEMO_MODE=false')
   console.log('4. Re-run this script to insert data into the database\n')
