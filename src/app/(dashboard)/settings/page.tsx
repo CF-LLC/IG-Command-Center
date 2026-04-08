@@ -9,6 +9,9 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
+
+const isDemoMode = isDemoModeEnabled()
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { toast } from '@/components/ui/use-toast'
@@ -198,8 +201,8 @@ export default function SettingsPage() {
                 },
                 {
                   name: 'Neon Postgres',
-                  status: process.env.NEXT_PUBLIC_DEMO_MODE === 'true' ? 'demo' : 'connected',
-                  description: process.env.NEXT_PUBLIC_DEMO_MODE === 'true' ? 'Using demo data' : 'Database connected',
+                        status: isDemoMode ? 'demo' : 'connected',
+                        description: isDemoMode ? 'Using demo data' : 'Database connected',
                   icon: '🗄️',
                 },
               ].map((integration) => (

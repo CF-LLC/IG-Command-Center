@@ -7,10 +7,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useRouter } from 'next/navigation'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 
 export const dynamic = 'force-dynamic'
 
-const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== 'false'
+const isDemoMode = isDemoModeEnabled()
 
 export default function LoginPage() {
   const router = useRouter()

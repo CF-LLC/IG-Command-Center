@@ -14,6 +14,7 @@ import {
   Instagram,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { isDemoModeEnabled } from '@/lib/runtime-config'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 
@@ -73,6 +74,7 @@ interface SidebarProps {
 
 export function Sidebar({ mobile = false, className }: SidebarProps) {
   const pathname = usePathname()
+  const isDemoMode = isDemoModeEnabled()
 
   return (
     <aside
@@ -119,11 +121,13 @@ export function Sidebar({ mobile = false, className }: SidebarProps) {
       </ScrollArea>
 
       {/* Demo mode badge */}
-      <div className="p-4 border-t">
-        <div className="rounded-lg bg-primary/10 px-3 py-2 text-xs text-primary font-medium text-center">
-          🎭 Demo Mode Active
+      {isDemoMode && (
+        <div className="p-4 border-t">
+          <div className="rounded-lg bg-primary/10 px-3 py-2 text-xs text-primary font-medium text-center">
+            🎭 Demo Mode Active
+          </div>
         </div>
-      </div>
+      )}
     </aside>
   )
 }

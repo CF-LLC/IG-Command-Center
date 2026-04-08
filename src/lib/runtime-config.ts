@@ -1,6 +1,16 @@
 export function isDemoModeEnabled(): boolean {
-  // Default to demo mode unless explicitly disabled.
-  return process.env.NEXT_PUBLIC_DEMO_MODE !== 'false'
+  const value = process.env.NEXT_PUBLIC_DEMO_MODE
+
+  if (value === 'true') {
+    return true
+  }
+
+  if (value === 'false') {
+    return false
+  }
+
+  // Safe default: demo mode on in development, off in production.
+  return process.env.NODE_ENV !== 'production'
 }
 
 export function hasDatabaseUrl(): boolean {
