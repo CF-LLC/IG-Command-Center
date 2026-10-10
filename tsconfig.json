@@ -22,5 +22,18 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/components/ui",
+    "src/components/layout",
+    "src/services",
+    "src/lib/access-auth.ts",
+    "src/lib/access-auth-edge.ts",
+    "src/lib/access-constants.ts",
+    "src/lib/demo-data.ts",
+    "src/lib/runtime-config.ts",
+    "src/lib/utils.ts",
+    "prisma",
+    "scripts"
+  ]
 }
