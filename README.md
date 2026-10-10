@@ -4,6 +4,8 @@ Production-ready internal dashboard to manage multiple Instagram accounts from o
 
 **Stack:** Next.js 14 · TypeScript · Tailwind · Server Actions · Instagram Graph API · OpenAI · Netlify
 
+**Live:** https://ig-command-center.netlify.app
+
 ## Features
 
 - Multi-account dashboard
@@ -35,6 +37,8 @@ Demo logins: cooper@local / command (Admin), maya@local / editor, jordan@local /
 4. Generate a long-lived Page access token.
 5. In Settings, paste IG user id + token → Connect & verify.
 
-Optional env: IG_ACCESS_TOKEN + IG_BUSINESS_ACCOUNT_ID, OPENAI_API_KEY
+Optional Netlify env vars: `OPENAI_API_KEY`, `OPENAI_MODEL`, `IG_ACCESS_TOKEN`, `IG_BUSINESS_ACCOUNT_ID`
 
-Live site: https://ig-command-center.netlify.app
+## Deploy
+
+Production branch is `main` on this repo. Netlify site **ig-command-center** builds from `main`.
