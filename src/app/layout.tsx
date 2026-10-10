@@ -1,23 +1,21 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import { Toaster } from '@/components/ui/toaster'
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'IG Command Center',
-  description: 'Instagram management platform for teams',
-}
+  title: "IG Command Center",
+  description: "Manage multiple Instagram accounts from one dashboard",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body className="min-h-screen bg-[#0b0d12] text-[#e8eaed] antialiased">
         {children}
-        <Toaster />
       </body>
     </html>
-  )
+  );
 }

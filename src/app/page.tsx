@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation'
+import { currentUser } from "@/lib/actions";
+import { redirect } from "next/navigation";
 
-export const dynamic = 'force-dynamic'
-
-export default function Home() {
-  redirect('/dashboard')
+export default async function Home() {
+  const user = await currentUser();
+  redirect(user ? "/dashboard" : "/login");
 }
